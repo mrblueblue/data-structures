@@ -1,35 +1,37 @@
 
 
 var Graph = function(){
-
   this.nodes = [];
-
 };
 
 Graph.prototype.addNode = function(node){
 
-  this.nodes.push({
-      value: node,
-      edges: []
-   });
+  var obj = {
+    value: node,
+    edges: []
+  }
+
+  this.nodes.push(obj);
 };
 
 Graph.prototype.contains = function(node){
 
   var found = false;
+
   _.each(this.nodes, function(item){
     if (item.value === node){
       found = true;
+      return found
     }
   });
   return found;
 };
 
 Graph.prototype.removeNode = function(node){
-  var that = this;
+  var self = this;
   _.each(this.nodes,function(item,index){
     if(item.value === node){
-      that.nodes.splice(index,1);
+      self.nodes.splice(index,1);
     }
   });
 };
@@ -68,13 +70,12 @@ Graph.prototype.removeEdge = function(fromNode, toNode){
   var edgeFrom = this.nodes[indexFrom].edges;
   var edgeTo = this.nodes[indexTo].edges;
 
-  edgeFrom.splice(edgeFrom.indexOf(toNode, 1));
-  edgeTo.splice(edgeTo.indexOf(fromNode, 1));
+  edgeFrom.splice( edgeFrom.indexOf(toNode, 1) );
+  edgeTo.splice( edgeTo.indexOf(fromNode, 1) );
 
 };
 
 Graph.prototype.forEachNode = function(cb){
-
   _.each(this.nodes,function(item){
     cb(item.value)
   });
