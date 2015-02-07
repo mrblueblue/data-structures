@@ -8,13 +8,10 @@ var Graph = function(){
 
 Graph.prototype.addNode = function(node){
 
-  this.nodes.push((function(){
-    var newNode = {
+  this.nodes.push({
       value: node,
       edges: []
-    };
-    return newNode;
-  })());
+   });
 };
 
 Graph.prototype.contains = function(node){
@@ -59,7 +56,6 @@ Graph.prototype.addEdge = function(fromNode, toNode){
 
   var indexFrom = this.getIndex(fromNode);
   var indexTo = this.getIndex(toNode);
-  console.log(indexFrom);
   this.nodes[indexFrom].edges.push(this.nodes[indexTo].value);
   this.nodes[indexTo].edges.push(this.nodes[indexFrom].value);
 
@@ -69,8 +65,11 @@ Graph.prototype.removeEdge = function(fromNode, toNode){
 
   var indexFrom = this.getIndex(fromNode);
   var indexTo = this.getIndex(toNode);
-  this.nodes[indexFrom].edges.splice(this.nodes[indexFrom].edges.indexOf(toNode,1));
-  this.nodes[indexTo].edges.splice(this.nodes[indexTo].edges.indexOf(fromNode,1));
+  var edgeFrom = this.nodes[indexFrom].edges;
+  var edgeTo = this.nodes[indexTo].edges;
+
+  edgeFrom.splice(edgeFrom.indexOf(toNode, 1));
+  edgeTo.splice(edgeTo.indexOf(fromNode, 1));
 
 };
 
