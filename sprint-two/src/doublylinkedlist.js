@@ -7,36 +7,33 @@ var DoublyLinkedList = function(){
 
   list.addToTail = function(value){
     var newNode = list.createNode(value);
-    // first add
+    var prevTail = this.tail
+    var newTail;
+  
     if (this.head === null) {
-
       this.head = newNode;
       this.tail = newNode;
-
-    }
-    // additional adds
-    else {
-
-      var prevTail = this.tail;
-
+    } else {
       this.tail.next = newNode;
       this.tail = newNode;
-
       this.tail.previous = prevTail;
-
     }
   };
 
   list.removeHead = function(){
-    var returnedValue;
+    var removedHead;
+    var newHead;
+
     if (this.head !== null){
-      returnedValue = this.head.value;
-      this.head = this.head.next;
-      if(this.head !== null){
-        this.head.previous = null;
+      removedHead = this.head.value;
+      newHead = this.head.next
+      this.head = newHead;
+
+      if(newHead !== null){
+        newHead.previous = null;
       }
     }
-    return returnedValue;
+    return removedHead;
   };
 
   list.removeTail = function(){
@@ -48,45 +45,38 @@ var DoublyLinkedList = function(){
 
   };
 
-  list.remove = function(value){
+  list.removeNode = function(value){
 
-    var result = this.find(value, function(node){return node;});
+    var removedNode = this.find( value, function (node) {return node;} );
 
-    if (result.previous !== null){
-      result.previous.next = result.next;
+    if (removedNode.previous !== null){
+      removedNode.previous.next = removedNode.next;
     }
 
-    if (result.next !== null) {
-      result.next.previous = result.previous;
+    if (removedNode.next !== null) {
+      removedNode.next.previous = removedNode.previous;
     }
 
   };
 
   list.contains = function(value){
-    var result = this.find(value,function(node){ return node.value;});
-
-
-    if(result === value){
-      return true;
-    }
-    else{
-      return false;
-    }
-
+    var foundValue = this.find( value, function (node) {return node.value;} );
+    return foundValue === value;
   };
 
   list.find = function(value, iterator, node){
 
-    node = node || this.head;
-
+    var node = node || this.head;
+   
     if (node.value === value){
-      return (iterator(node));
-    } else {
-      if (node.next === null){
+      return iterator(node);
+    } 
+    
+    if (node.next === null) {
         return undefined;
+      } else {
+        return this.find(value, iterator, node.next);
       }
-      return (this.find(value, iterator, node.next));
-    }
 
   };
 
@@ -97,7 +87,6 @@ var DoublyLinkedList = function(){
     node.previous = null;
     return node;
   };
-
 
   return list;
 };
